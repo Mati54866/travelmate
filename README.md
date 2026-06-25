@@ -1,6 +1,8 @@
 ﻿# TravelMate
 
-TravelMate is a trip-guide booking platform for travelers and local guides.
+TravelMate is a full-stack travel guide platform where travelers can discover local guides, book tours, manage trips, and leave reviews while guides manage profiles, bookings, tours, and earnings from their own dashboard.
+
+Live app: https://travelmate-guide.vercel.app
 
 ## Features
 - Traveler and guide accounts
@@ -10,11 +12,18 @@ TravelMate is a trip-guide booking platform for travelers and local guides.
 - Admin dashboard for user and guide management
 
 ## Screenshots
-Stored in `assets/`:
-- `assets/homepage.png`
-- `assets/guidePage.png`
-- `assets/GuideDashboard.png`
-- `assets/ReviewsPage.png`
+
+### Home
+![TravelMate home page](assets/homepage.png)
+
+### Browse Guides
+![TravelMate guide browsing page](assets/guidePage.png)
+
+### Guide Dashboard
+![TravelMate guide dashboard](assets/GuideDashboard.png)
+
+### Reviews
+![TravelMate reviews page](assets/ReviewsPage.png)
 
 ## Setup
 ```bash
