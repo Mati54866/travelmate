@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import { getErrorMessage } from "../../utils/api";
 
@@ -15,6 +16,7 @@ const RegisterPage = () => {
     role: "traveler",
   });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const googleEnabled = Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID);
 
   const handleChange = (field, value) =>
@@ -79,15 +81,24 @@ const RegisterPage = () => {
             placeholder="Email address"
             required
           />
-          <input
-            className="input-field"
-            type="password"
-            value={form.password}
-            onChange={(event) => handleChange("password", event.target.value)}
-            placeholder="Password"
-            minLength={6}
-            required
-          />
+          <div className="relative">
+            <input
+              className="input-field pr-10"
+              type={showPassword ? "text" : "password"}
+              value={form.password}
+              onChange={(event) => handleChange("password", event.target.value)}
+              placeholder="Password"
+              minLength={6}
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white transition-colors"
+              onClick={() => setShowPassword((prev) => !prev)}
+            >
+              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            </button>
+          </div>
           <select
             className="input-field"
             value={form.role}

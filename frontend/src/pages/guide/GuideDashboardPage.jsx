@@ -20,6 +20,7 @@ import {
   Plus,
   ChevronDown,
   TrendingUp,
+  TrendingDown,
   DollarSign,
   Percent,
   CheckCircle2,
@@ -226,20 +227,56 @@ const MetricRow = ({ dot, label, value }) => (
   </div>
 );
 
-const BookingsOverviewChart = () => {
+const BookingsOverviewChart = ({ bookings = [] }) => {
   const width = 400;
   const height = 180;
 
-  const points = [
-    { x: 40, y: 107, label: "May 15" },
-    { x: 125, y: 72, label: "May 22" },
-    { x: 210, y: 37, label: "May 29" },
-    { x: 295, y: 55, label: "Jun 5" },
-    { x: 380, y: 33, label: "Jun 12" },
-  ];
+  const isNewAccount = bookings.length === 0;
+
+  // Generate dynamic labels for the empty/new account chart
+  const getEmptyLabels = () => {
+    const labels = [];
+    const now = new Date();
+    for (let i = 4; i >= 0; i--) {
+      const date = new Date(now.getTime() - i * 7 * 24 * 60 * 60 * 1000);
+      labels.push(
+        date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      );
+    }
+    return labels;
+  };
+
+  const emptyLabels = getEmptyLabels();
+
+  const points = isNewAccount
+    ? [
+        { x: 40, y: 150, label: emptyLabels[0], value: 0 },
+        { x: 125, y: 150, label: emptyLabels[1], value: 0 },
+        { x: 210, y: 150, label: emptyLabels[2], value: 0 },
+        { x: 295, y: 150, label: emptyLabels[3], value: 0 },
+        { x: 380, y: 150, label: emptyLabels[4], value: 0 },
+      ]
+    : [
+        { x: 40, y: 107, label: "May 15", value: 10 },
+        { x: 125, y: 72, label: "May 22", value: 18 },
+        { x: 210, y: 37, label: "May 29", value: 26 },
+        { x: 295, y: 55, label: "Jun 5", value: 22 },
+        { x: 380, y: 33, label: "Jun 12", value: 27 },
+      ];
 
   const polylinePoints = points.map((p) => `${p.x},${p.y}`).join(" ");
   const areaPoints = `40,150 ${polylinePoints} 380,150`;
+
+  const totalBookings = isNewAccount ? 0 : 23;
+  const percentText = isNewAccount ? "0%" : "+22%";
+  const isPositive = !isNewAccount; // true for standard static bar
+
+  const gridLines = [
+    { y: 20, label: "30" },
+    { y: 63, label: "20" },
+    { y: 107, label: "10" },
+    { y: 150, label: "0" },
+  ];
 
   return (
     <article
@@ -252,7 +289,7 @@ const BookingsOverviewChart = () => {
           </p>
           <div className="flex items-baseline gap-2 mt-2">
             <span className="text-[28px] font-semibold leading-none text-white">
-              23
+              {totalBookings}
             </span>
             <span className="text-xs text-white/40">Total Bookings</span>
           </div>
@@ -263,9 +300,15 @@ const BookingsOverviewChart = () => {
             <ChevronDown className="h-3 w-3" />
           </button>
           <div className="mt-1 flex items-center gap-1 text-right">
-            <span className="flex items-center gap-0.5 text-xs font-semibold text-[#8ceb97]">
-              <TrendingUp className="h-3.5 w-3.5" />
-              22%
+            <span
+              className={`flex items-center gap-0.5 text-xs font-semibold ${isNewAccount ? "text-white/40" : "text-[#8ceb97]"}`}
+            >
+              {isPositive ? (
+                <TrendingUp className="h-3.5 w-3.5" />
+              ) : (
+                <span className="h-1 w-2 bg-white/40 rounded-full mr-1 inline-block" />
+              )}
+              {percentText}
             </span>
             <span className="text-[10px] text-white/40">vs last 30 days</span>
           </div>
@@ -281,12 +324,7 @@ const BookingsOverviewChart = () => {
             </linearGradient>
           </defs>
 
-          {[
-            { y: 20, label: "30" },
-            { y: 63, label: "20" },
-            { y: 107, label: "10" },
-            { y: 150, label: "0" },
-          ].map((line, idx) => (
+          {gridLines.map((line, idx) => (
             <g key={idx}>
               <text
                 x="25"
@@ -327,7 +365,9 @@ const BookingsOverviewChart = () => {
               fill="#8ceb97"
               stroke="#0a1020"
               strokeWidth="2.5"
-            />
+            >
+              <title>{`${p.value} booking${p.value === 1 ? "" : "s"}`}</title>
+            </circle>
           ))}
 
           {points.map((p, idx) => (
@@ -1102,7 +1142,7 @@ const GuideDashboardPage = () => {
 
             {/* Right Sidebar - Streamlined without duplicate profile card */}
             <aside className="space-y-6">
-              <BookingsOverviewChart />
+              <BookingsOverviewChart bookings={bookings} />
               <div
                 id="performance-section"
                 ref={(element) => {
