@@ -5,7 +5,7 @@ TravelMate is a full-stack travel guide platform where travelers can discover lo
 Live app: https://travelmate-guide.vercel.app
 
 ## Features
-- Traveler and guide accounts
+- Traveler and guides accounts
 - Guide profiles with tours, bookings, and reviews
 - ImageKit-powered image uploads
 - Google login and email/password auth
