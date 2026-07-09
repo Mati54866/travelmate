@@ -156,7 +156,18 @@ const HomePage = () => {
   ];
   const reviewsToShow = infiniteReviews;
   const startIndex = sampleReviews.length;
-  const cardWidth = 325; // 320px + 5px gap
+  // Card width: must match the CSS min-width exactly.
+  // Main layout px-3 = 12px each side (24px total)
+  // Carousel wrapper px-8 = 32px each side on mobile (64px total)
+  // gap-5 between cards = 20px (we add this so scroll snaps cleanly)
+  // Total non-card space on mobile = 24 + 64 = 88px; add ~16px buffer = 104px
+  const getCardWidth = () => {
+    if (typeof window === 'undefined') return 300;
+    if (window.innerWidth < 640) return Math.max(240, window.innerWidth - 104);
+    if (window.innerWidth < 768) return 300;
+    return 325;
+  };
+  const cardWidth = getCardWidth();
 
   const handleCarouselScroll = (direction) => {
     const el = carouselRef.current;
@@ -315,9 +326,9 @@ const HomePage = () => {
           <img
             src="/assets/hero.png"
             alt="Temple landscape at sunset"
-            className="absolute inset-0 h-full w-full object-cover opacity-60"
+            className="absolute inset-0 h-full w-full object-cover opacity-60 object-[70%_top] sm:object-center"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#071120]/50 via-[#071120]/30 to-[#071120]/50" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#071120]/70 via-[#071120]/20 to-[#071120]/80 sm:from-[#071120]/50 sm:via-[#071120]/30 sm:to-[#071120]/50" />
           <div className="relative z-10 flex min-h-[620px] flex-col p-5 sm:min-h-[700px] sm:p-8 lg:min-h-[760px] lg:p-10">
             <div className="max-w-[380px]">
               <p className="text-xs uppercase tracking-[0.34em] text-white/80">
@@ -341,11 +352,11 @@ const HomePage = () => {
             </div>
 
             {/* Hero Stats Icons */}
-            <div className="mt-10 grid grid-cols-1 gap-5 border-t border-white/10 pt-6 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4 lg:gap-8 lg:pt-8">
-              <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#75d780]/20">
+            <div className="mt-8 grid grid-cols-2 gap-3 border-t border-white/10 pt-5 sm:mt-12 sm:grid-cols-2 sm:gap-5 sm:pt-8 lg:grid-cols-4 lg:gap-8">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="flex h-10 w-10 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-full bg-[#75d780]/20">
                   <svg
-                    className="h-7 w-7 text-[#75d780]"
+                    className="h-5 w-5 sm:h-7 sm:w-7 text-[#75d780]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -359,16 +370,16 @@ const HomePage = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-white">25k+</p>
-                  <p className="text-xs text-white/60 mt-0.5">
+                  <p className="text-lg sm:text-2xl font-bold text-white">25k+</p>
+                  <p className="text-[11px] sm:text-xs text-white/60 mt-0.5">
                     Happy Travelers
                   </p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#75d780]/20">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="flex h-10 w-10 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-full bg-[#75d780]/20">
                   <svg
-                    className="h-7 w-7 text-[#75d780]"
+                    className="h-5 w-5 sm:h-7 sm:w-7 text-[#75d780]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -382,14 +393,14 @@ const HomePage = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-white">40k+</p>
-                  <p className="text-xs text-white/60 mt-0.5">Total Bookings</p>
+                  <p className="text-lg sm:text-2xl font-bold text-white">40k+</p>
+                  <p className="text-[11px] sm:text-xs text-white/60 mt-0.5">Total Bookings</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#75d780]/20">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="flex h-10 w-10 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-full bg-[#75d780]/20">
                   <svg
-                    className="h-7 w-7 text-[#75d780]"
+                    className="h-5 w-5 sm:h-7 sm:w-7 text-[#75d780]"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -403,14 +414,14 @@ const HomePage = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-white">25k+</p>
-                  <p className="text-xs text-white/60 mt-0.5">Transactions</p>
+                  <p className="text-lg sm:text-2xl font-bold text-white">25k+</p>
+                  <p className="text-[11px] sm:text-xs text-white/60 mt-0.5">Transactions</p>
                 </div>
               </div>
-              <div className="flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#75d780]/20">
+              <div className="flex items-center gap-2 sm:gap-4">
+                <div className="flex h-10 w-10 sm:h-16 sm:w-16 flex-shrink-0 items-center justify-center rounded-full bg-[#75d780]/20">
                   <svg
-                    className="h-7 w-7 text-[#75d780]"
+                    className="h-5 w-5 sm:h-7 sm:w-7 text-[#75d780]"
                     fill="currentColor"
                     viewBox="0 0 24 24"
                   >
@@ -418,8 +429,8 @@ const HomePage = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-white">4.5</p>
-                  <p className="text-xs text-white/60 mt-0.5">Average Rating</p>
+                  <p className="text-lg sm:text-2xl font-bold text-white">4.5</p>
+                  <p className="text-[11px] sm:text-xs text-white/60 mt-0.5">Average Rating</p>
                 </div>
               </div>
             </div>
@@ -434,7 +445,7 @@ const HomePage = () => {
                   Discover a curated range of travel experiences designed to make every journey memorable, from group adventures to private guided tours.
                 </p>
               </div>
-              <div className="mt-8 grid gap-3 md:grid-cols-3">
+              <div className="mt-8 grid gap-3 sm:grid-cols-3">
                 {offerCards.map((card) => (
                   <article
                     key={card.number}
@@ -449,7 +460,7 @@ const HomePage = () => {
                     >
                       {card.number}
                     </p>
-                    <div className="mt-5 flex items-start justify-between gap-4">
+                    <div className="mt-5 flex items-start justify-between gap-3">
                       <div>
                         <h3 className="max-w-[130px] text-xl font-semibold leading-6">
                           {card.title}
@@ -481,7 +492,7 @@ const HomePage = () => {
       </article>
 
       {/* Popular Destinations Section */}
-      <section className="travel-panel rounded-[30px] bg-[#071120] p-8">
+      <section className="travel-panel rounded-[24px] bg-[#071120] p-5 sm:rounded-[30px] sm:p-8">
         <div className="text-center">
           <h2 className="font-display text-3xl text-white sm:text-4xl md:text-5xl">
             Popular Destinations
@@ -533,9 +544,9 @@ const HomePage = () => {
         </div>
 
         {/* Tours List */}
-        <div className="mt-10 grid gap-4 lg:grid-cols-[0.84fr,1.16fr]">
+        <div className="mt-10 grid gap-4 overflow-hidden lg:grid-cols-[0.84fr,1.16fr]">
           {/* Popular Tours Card */}
-          <div className="rounded-[20px] border border-white/10 bg-[linear-gradient(180deg,#152235_0%,#0a1426_100%)] p-5 flex flex-col gap-4">
+          <div className="min-w-0 overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(180deg,#152235_0%,#0a1426_100%)] p-5 flex flex-col gap-4">
             {/* Card Header */}
             <div className="flex items-center gap-2">
               <svg
@@ -627,7 +638,7 @@ const HomePage = () => {
           </div>
 
           {/* Why TravelMate? Panel */}
-          <div className="rounded-[20px] border border-white/10 bg-[linear-gradient(180deg,#152235_0%,#0a1426_100%)] p-5 sm:p-6 flex flex-col gap-4">
+          <div className="min-w-0 overflow-hidden rounded-[20px] border border-white/10 bg-[linear-gradient(180deg,#152235_0%,#0a1426_100%)] p-5 sm:p-6 flex flex-col gap-4">
             {/* Header */}
             <div className="flex items-center gap-2">
               <svg
@@ -647,14 +658,12 @@ const HomePage = () => {
                 Why TravelMate?
               </h3>
             </div>
-            <p className="text-xs text-white/50 leading-5 -mt-2">
-              We make travel simple, safe and unforgettable
-              <br className="hidden sm:block" /> with trusted local experts by
-              your side.
+            <p className="text-xs text-white/50 leading-5 -mt-2 break-words">
+              We make travel simple, safe and unforgettable with trusted local experts by your side.
             </p>
 
             {/* Feature Grid */}
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 xs:grid-cols-2 sm:grid-cols-2">
               {/* Verified Local Guides */}
               <div className="rounded-[14px] bg-white/5 p-3.5 flex flex-col gap-2 hover:bg-white/8 transition">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#75d780]/15">
@@ -676,8 +685,7 @@ const HomePage = () => {
                   Verified Local Guides
                 </p>
                 <p className="text-[11px] text-white/45 leading-4">
-                  All guides are verified and background-checked for your
-                  safety.
+                  Verified &amp; background-checked for safety.
                 </p>
               </div>
 
@@ -702,8 +710,7 @@ const HomePage = () => {
                   Secure Payments
                 </p>
                 <p className="text-[11px] text-white/45 leading-4">
-                  Your payments are protected with industry-leading security and
-                  encryption.
+                  Protected with industry-leading encryption.
                 </p>
               </div>
 
@@ -747,14 +754,13 @@ const HomePage = () => {
                   Flexible Cancellation
                 </p>
                 <p className="text-[11px] text-white/45 leading-4">
-                  Cancel or reschedule up to 24 hours before the tour for a full
-                  refund.
+                  Cancel up to 24h before for a full refund.
                 </p>
               </div>
             </div>
 
             {/* Social Proof Footer */}
-            <div className="mt-1 flex items-center gap-3 rounded-[14px] bg-white/5 p-3 overflow-hidden relative">
+            <div className="mt-1 flex items-center gap-2 rounded-[14px] bg-white/5 p-3 overflow-hidden relative min-w-0">
               {/* Overlapping Avatars */}
               <div className="flex -space-x-2 flex-shrink-0">
                 <img
@@ -773,7 +779,7 @@ const HomePage = () => {
                   className="h-8 w-8 rounded-full border-2 border-[#152235] object-cover"
                 />
               </div>
-              <div>
+              <div className="min-w-0 flex-1">
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <svg
@@ -786,10 +792,12 @@ const HomePage = () => {
                     </svg>
                   ))}
                 </div>
-                <p className="text-[11px] text-white/60 mt-0.5">
+                <p className="text-[11px] text-white/60 mt-0.5 leading-4">
                   Trusted by{" "}
-                  <span className="text-white font-semibold">5,000+</span>{" "}
-                  travelers worldwide
+                  <span className="text-white font-semibold">5,000+</span>
+                  <br className="xs:hidden" />{" "}
+                  <span className="hidden xs:inline">travelers worldwide</span>
+                  <span className="xs:hidden">worldwide</span>
                 </p>
               </div>
               {/* Decorative travel image */}
@@ -1127,10 +1135,10 @@ const HomePage = () => {
                 RECOMMENDED TOUR
               </p>
               {featuredTour && !featuredTour.isSample ? (
-                <div className="mt-6 flex gap-6 flex-1">
+                <div className="mt-6 flex flex-col gap-5 flex-1 sm:flex-row sm:gap-6">
                   {/* Left side - Tour Image */}
-                  <div className="flex-1 basis-2/5 min-w-0">
-                    <div className="relative h-full rounded-[16px] overflow-hidden bg-[#07101d]">
+                  <div className="w-full sm:flex-1 sm:basis-2/5 min-w-0">
+                    <div className="relative h-44 sm:h-full rounded-[16px] overflow-hidden bg-[#07101d]">
                       <img
                         src={
                           featuredTour.images?.[0] || "/assets/feturedTour.avif"
@@ -1145,7 +1153,7 @@ const HomePage = () => {
                   </div>
 
                   {/* Right side - Tour Content */}
-                  <div className="flex-1 basis-3/5 min-w-0 flex flex-col justify-between">
+                  <div className="w-full sm:flex-1 sm:basis-3/5 min-w-0 flex flex-col justify-between">
                     <div>
                       <h3 className="font-display text-2xl font-semibold text-white leading-tight">
                         {featuredTour.title}
@@ -1157,7 +1165,7 @@ const HomePage = () => {
                       </p>
 
                       {/* Tour Stats - with icons */}
-                      <div className="mt-4 flex items-center gap-8">
+                      <div className="mt-4 flex flex-wrap items-center gap-4 sm:gap-8">
                         <div className="flex items-center gap-3">
                           <svg
                             className="h-6 w-6 text-[#75d780]"
@@ -1308,12 +1316,12 @@ const HomePage = () => {
               </p>
             </div>
 
-            <div className="relative max-w-[1200px] mx-auto px-16">
+            <div className="relative max-w-[1200px] mx-auto px-8 sm:px-16">
               {/* Left Button */}
               <button
                 type="button"
                 onClick={() => handleCarouselScroll(-1)}
-                className="absolute -left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-[#0a1020] border border-white/10 p-3 text-white/60 transition hover:bg-white/10 hover:text-white shadow-lg"
+                className="absolute -left-1 sm:-left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-[#0a1020] border border-white/10 p-2 sm:p-3 text-white/60 transition hover:bg-white/10 hover:text-white shadow-lg"
                 aria-label="Previous"
               >
                 <svg
@@ -1340,6 +1348,7 @@ const HomePage = () => {
                   msOverflowStyle: "none",
                   WebkitOverflowScrolling: "touch",
                   scrollBehavior: "smooth",
+                  overflowX: "hidden",
                 }}
               >
                 <style>{`
@@ -1351,7 +1360,11 @@ const HomePage = () => {
                 {reviewsToShow.map((review, i) => (
                   <div
                     key={`review-${i}`}
-                    className="min-w-[320px] w-[320px] flex-shrink-0 rounded-2xl border border-white/10 bg-[#0a1020] p-6 transition hover:border-[#75d780]/30 hover:shadow-xl"
+                    className="flex-shrink-0 rounded-2xl border border-white/10 bg-[#0a1020] p-5 sm:p-6 transition hover:border-[#75d780]/30 hover:shadow-xl"
+                    style={{
+                      minWidth: cardWidth,
+                      width: cardWidth,
+                    }}
                   >
                     {/* Star Rating */}
                     <div className="flex items-center gap-1 mb-4">
@@ -1400,7 +1413,7 @@ const HomePage = () => {
               <button
                 type="button"
                 onClick={() => handleCarouselScroll(1)}
-                className="absolute -right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-[#0a1020] border border-white/10 p-3 text-white/60 transition hover:bg-white/10 hover:text-white shadow-lg"
+                className="absolute -right-1 sm:-right-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-[#0a1020] border border-white/10 p-2 sm:p-3 text-white/60 transition hover:bg-white/10 hover:text-white shadow-lg"
                 aria-label="Next"
               >
                 <svg
