@@ -8,7 +8,7 @@ Live app: https://travelmate-guide.vercel.app
 - Traveler and guides accounts
 - Guide profiles with tours, bookings, and reviews
 - ImageKit-powered image uploads
-- Google login and email/password auth
+- Google's login and email/password auth
 - Admin dashboard for user and guide management
 
 ## Screenshots
