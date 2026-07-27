@@ -67,14 +67,24 @@ Frontend:
 - `npm run seed:demo` - seed demo data
 
 ## Deployment
-Frontend:
-- Root: `frontend`
-- Build: `npm run build`
-- Output: `dist`
 
-Backend:
-- Root: `backend`
-- Start: `npm start`
-- Set production env vars in the host
-- Make sure `CLIENT_URL` matches the deployed frontend URL
-  add a small section to this README
+### Frontend (Vercel)
+- Root directory: `frontend`
+- Build command: `npm run build`
+- Output directory: `dist`
+- Environment variable: `VITE_API_URL=https://your-backend.vercel.app/api`
+
+### Backend (Vercel)
+- Root directory: `backend`
+- Start command: `npm start`
+- Set all environment variables in the Vercel dashboard
+- Make sure `CLIENT_URL` matches the deployed frontend URL exactly
+
+> ⚠️ **Important**: Vercel does not read your local `.env` file. Always set environment variables through the Vercel dashboard for deployed apps.
+
+## Tech Stack
+- **Frontend**: React, Vite, Tailwind CSS
+- **Backend**: Node.js, Express, MongoDB
+- **Auth**: JWT + Google OAuth
+- **Storage**: ImageKit
+- **Deployment**: Vercel (frontend + backend)
