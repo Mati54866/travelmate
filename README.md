@@ -61,7 +61,7 @@ Frontend:
 - `VITE_API_URL`
 - `VITE_GOOGLE_CLIENT_ID`
 
-## Useful scripts
+## Useful script
 - `npm run build` - build the frontend
 - `npm start` - start the backend
 - `npm run seed:demo` - seed demo data
