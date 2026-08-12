@@ -80,7 +80,7 @@ Frontend:
 - Set all environment variables in the Vercel dashboard
 - Make sure `CLIENT_URL` matches the deployed frontend URL exactly
 
-> ⚠️ **Important**: Vercel does not read your local `.env` file. Always set environment variables through the Vercel dashboard for deployed apps.
+> ⚠️ **Important**: Vercel does not read your local `.env` file. Always set environment variables through the Vercel dashboard for deployed app.
 
 ## Tech Stack
 - **Frontend**: React, Vite, Tailwind CSS
