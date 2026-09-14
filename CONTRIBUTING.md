@@ -2,9 +2,7 @@
 
 Thank you for contributing to **TravelMate**!
 
----
-
-## 🚀 Quick Setup
+## 🚀 Setup Instructions
 
 1. **Fork & Clone**
    ```bash
@@ -18,9 +16,7 @@ Thank you for contributing to **TravelMate**!
    npm run dev
    ```
 
----
+## 📋 Coding Standards
 
-## 📋 Guidelines
-
-- Use semantic commit messages (`feat:`, `fix:`, `docs:`, `style:`).
-- Test UI responsiveness on mobile viewports.
+- Use React functional components with TypeScript types.
+- Follow Tailwind CSS utility classes.
