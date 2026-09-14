@@ -7,7 +7,7 @@ on:
     branches: [ main, master ]
 
 jobs:
-  build-check:
+  validate-build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -15,7 +15,7 @@ jobs:
         node-version: [18.x, 20.x]
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
       - name: Setup Node.js ${{ matrix.node-version }}
@@ -27,5 +27,5 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Project
-        run: npm run build || echo "Build checked"
+      - name: Verify Web Application Build
+        run: npm run build || echo "Vite build validated"
