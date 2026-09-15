@@ -1,78 +1,90 @@
-<div align="center">
-  <br />
-  <h1 align="center">✈️ TravelMate</h1>
-  <p align="center">AI-Powered Smart Travel Planning & Interactive Itinerary Companion</p>
+# TravelMate
 
-  <div>
-    <a href="https://github.com/Mati54866/travelmate/actions"><img src="https://github.com/Mati54866/travelmate/actions/workflows/ci.yml/badge.svg" alt="CI Status" /></a>
-    <img src="https://img.shields.io/badge/React_18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React 18" />
-    <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
-    <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/OpenAI_API-412991?style=for-the-badge&logo=openai&logoColor=white" alt="OpenAI" />
-    <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-  </div>
-</div>
+TravelMate is a full-stack travel guide platform where travelers can discover local guides, book tours, manage trips, and leave reviews while guides manage profiles, bookings, tours, and earnings from their own dashboard.
 
----
+Live app: https://travelmate-guide.vercel.app
 
-## 📋 Table of Contents
+## Features
+- Traveler and guides accounts
+- Guide profiles with tours, bookings, and reviews
+- ImageKit-powered image uploads
+- Google's login and email/password auth
+- Admin dashboard for user and guide management
 
-1. [✨ Introduction](#introduction)
-2. [⚙️ Tech Stack](#tech-stack)
-3. [🔋 Key Features](#key-features)
-4. [🚀 Quick Start](#quick-start)
-5. [🔐 Environment Variables](#environment-variables)
-6. [🤝 Contributing](#contributing)
-7. [📄 License](#license)
+## Screenshots
 
----
+### Home
+![TravelMate home page](assets/homepage.png)
 
-## <a name="introduction">✨ Introduction</a>
+### Browse Guides
+![TravelMate guide browsing page](assets/guidePage.png)
 
-**TravelMate** is an intelligent, AI-driven travel planner designed for modern travelers. Input your target destination, budget, trip duration, and personal interests to receive custom day-by-day itineraries, expense breakdowns, local food recommendations, and interactive navigation pins.
+### Guide Dashboard
+![TravelMate guide dashboard](assets/GuideDashboard.png)
 
----
+### Reviews
+![TravelMate reviews page](assets/ReviewsPage.png)
 
-## <a name="tech-stack">⚙️ Tech Stack</a>
-
-| Category | Technology |
-| -------- | ---------- |
-| **Frontend** | React 18, Vite, TypeScript |
-| **Styling** | Tailwind CSS & Glassmorphism UI Components |
-| **AI Integration** | OpenAI API & Claude Prompt Engineering |
-| **Icons & Media** | Lucide React Icons |
-| **State Persistence** | LocalStorage / IndexedDB |
-
----
-
-## <a name="features">🔋 Key Features</a>
-
-- 🤖 **AI Itinerary Generator**: Custom day-by-day travel schedules based on budget and travel style.
-- 💰 **Budget & Expense Manager**: Daily expense breakdown across lodging, food, and activities.
-- 🗺️ **Local Spot Recommendations**: Curated dining, historical landmarks, and hidden gems.
-- 📱 **Mobile-First UX**: Responsive touch-friendly layout for mobile users.
-
----
-
-## <a name="quick-start">🚀 Quick Start</a>
-
-### Prerequisites
-
-- [Node.js](https://nodejs.org/) (v18+)
-- [npm](https://www.npmjs.com/)
-
-### Installation
-
+## Setup
 ```bash
-git clone https://github.com/Mati54866/travelmate.git
-cd travelmate
-npm install
-cp .env.example .env
+npm run install:all
+```
+
+Copy the environment files and fill them in:
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
+
+Start both apps:
+```bash
 npm run dev
 ```
 
----
+## Environment
+Backend:
+- `MONGO_URI`
+- `CLIENT_URL`
+- `JWT_SECRET`
+- `GOOGLE_CLIENT_ID`
+- `GOOGLE_CLIENT_SECRET`
+- `IMAGEKIT_URL_ENDPOINT`
+- `IMAGEKIT_PUBLIC_KEY`
+- `IMAGEKIT_PRIVATE_KEY`
+- `SMTP_HOST`
+- `SMTP_PORT`
+- `SMTP_USER`
+- `SMTP_PASS`
+- `EMAIL_FROM`
 
-## <a name="license">📄 License</a>
+Frontend:
+- `VITE_API_URL`
+- `VITE_GOOGLE_CLIENT_ID`
 
-Distributed under the [MIT License](LICENSE).
+## Useful scripts
+- `npm run build` - build the frontend
+- `npm start` - start the backend
+- `npm run seed:demo` - seed demo data
+
+## Deployment
+
+### Frontend (Vercel)
+- Root directory: `frontend`
+- Build command: `npm run build`
+- Output directory: `dist`
+- Environment variable: `VITE_API_URL=https://your-backend.vercel.app/api`
+
+### Backend (Vercel)
+- Root directory: `backend`
+- Start command: `npm start`
+- Set all environment variables in the Vercel dashboard
+- Make sure `CLIENT_URL` matches the deployed frontend URL exactly
+
+> ⚠️ **Important**: Vercel does not read your local `.env` file. Always set environment variables through the Vercel dashboard for deployed apps.
+
+## Tech Stack
+- **Frontend**: React, Vite, Tailwind CSS
+- **Backend**: Node.js, Express, MongoDB
+- **Auth**: JWT + Google OAuth
+- **Storage**: ImageKit
+- **Deployment**: Vercel (frontend + backend)
