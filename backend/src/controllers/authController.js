@@ -90,13 +90,22 @@ export const googleLogin = async (req, res) => {
   });
 
   if (!user) {
+    // No account found — if no role was provided, ask the frontend to prompt the user
+    if (!role) {
+      return res.status(202).json({
+        newUser: true,
+        googleUser: { name, email, picture },
+      });
+    }
+
+    // Role was provided (user picked it in the modal) — create the account now
     user = await User.create({
       name,
       email,
       googleId: sub,
       avatar: picture || getDefaultAvatarForGender(gender || "male"),
       gender: gender || "male",
-      role: role || "traveler",
+      role,
     });
   } else if (!user.googleId) {
     user.googleId = sub;
@@ -111,6 +120,7 @@ export const googleLogin = async (req, res) => {
 
   return respondWithAuth(res, user);
 };
+
 
 export const getCurrentUser = async (req, res) => {
   return res.status(200).json({ user: sanitizeUser(req.user) });

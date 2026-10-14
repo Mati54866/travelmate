@@ -67,6 +67,8 @@ export const AuthProvider = ({ children }) => {
 
   const loginWithGoogle = async (payload) => {
     const { data } = await authApi.google(payload);
+    // If backend signals a new (unregistered) user, return early without persisting auth
+    if (data.newUser) return data;
     persistAuth(data.token, data.user);
     toast.success("Signed in with Google");
     return data;

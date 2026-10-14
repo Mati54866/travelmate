@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown } from "lucide-react";
 import useAuth from "../../hooks/useAuth";
 import BrandLogo from "../branding/BrandLogo";
@@ -16,6 +16,7 @@ const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const profileDropdownRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +35,22 @@ const Navbar = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    if (!profileDropdownOpen) {
+      return undefined;
+    }
+
+    const handleOutsidePointerDown = (event) => {
+      if (!profileDropdownRef.current?.contains(event.target)) {
+        setProfileDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener("pointerdown", handleOutsidePointerDown);
+    return () =>
+      document.removeEventListener("pointerdown", handleOutsidePointerDown);
+  }, [profileDropdownOpen]);
 
   const handleLogout = () => {
     logout();
@@ -100,7 +117,7 @@ const Navbar = () => {
           {/* Desktop Auth Section */}
           <div className="hidden items-center gap-3 xl:gap-4 lg:flex">
             {user ? (
-              <div className="relative">
+              <div ref={profileDropdownRef} className="relative">
                 <button
                   onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
                   className="flex items-center gap-3 rounded-full border border-white/10 bg-dark-3/50 px-2.5 py-2 transition hover:border-white/20 hover:bg-dark-3 xl:px-3"
@@ -128,42 +145,36 @@ const Navbar = () => {
 
                 {/* Profile Dropdown */}
                 {profileDropdownOpen && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-40"
+                  <div className="absolute right-0 mt-3 w-56 origin-top-right rounded-xl border border-white/10 bg-dark-3 py-2 shadow-2xl z-50">
+                    <div className="border-b border-white/10 px-4 py-3">
+                      <p className="text-sm font-semibold text-white">
+                        {user.name}
+                      </p>
+                      <p className="text-xs text-white/50">{user.email}</p>
+                    </div>
+                    <Link
+                      to="/profile"
                       onClick={() => setProfileDropdownOpen(false)}
-                    />
-                    <div className="absolute right-0 mt-3 w-56 origin-top-right rounded-xl border border-white/10 bg-dark-3 py-2 shadow-2xl z-50">
-                      <div className="border-b border-white/10 px-4 py-3">
-                        <p className="text-sm font-semibold text-white">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-white/50">{user.email}</p>
-                      </div>
+                      className="block px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white"
+                    >
+                      Profile Settings
+                    </Link>
+                    {user?.role === "admin" && (
                       <Link
-                        to="/profile"
+                        to="/admin/dashboard"
                         onClick={() => setProfileDropdownOpen(false)}
                         className="block px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white"
                       >
-                        Profile Settings
+                        Admin Dashboard
                       </Link>
-                      {user?.role === "admin" && (
-                        <Link
-                          to="/admin/dashboard"
-                          onClick={() => setProfileDropdownOpen(false)}
-                          className="block px-4 py-2 text-sm text-white/70 transition hover:bg-white/5 hover:text-white"
-                        >
-                          Admin Dashboard
-                        </Link>
-                      )}
-                      <button
-                        onClick={handleLogout}
-                        className="block w-full px-4 py-2 text-left text-sm text-red-400 transition hover:bg-white/5"
-                      >
-                        Sign Out
-                      </button>
-                    </div>
-                  </>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full px-4 py-2 text-left text-sm text-red-400 transition hover:bg-white/5"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
                 )}
               </div>
             ) : (

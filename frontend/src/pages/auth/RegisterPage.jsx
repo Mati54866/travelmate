@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,13 +18,26 @@ const RegisterPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const googleEnabled = Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID);
+  const [btnWidth, setBtnWidth] = useState(() => {
+    if (typeof window === "undefined") return 360;
+    return Math.min(400, Math.max(220, window.innerWidth - 64));
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const w = Math.min(400, Math.max(200, window.innerWidth - 64));
+      setBtnWidth(w);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleChange = (field, value) =>
     setForm((prev) => ({ ...prev, [field]: value }));
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       setLoading(true);
       const data = await register(form);
@@ -62,10 +75,48 @@ const RegisterPage = () => {
           Create your TravelMate account
         </h1>
         <p className="mt-3 text-white/60">
-          Select your account type to get started — you can update your profile after signing up.
+          First, choose your account type — this applies to both sign-up methods below.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-8 space-y-4">
+        <div className="mt-6 grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            id="role-traveler"
+            onClick={() => handleChange("role", "traveler")}
+            className="relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all duration-200"
+            style={{
+              borderColor: form.role === "traveler" ? "#75d780" : "rgba(255,255,255,0.1)",
+              background: form.role === "traveler" ? "rgba(117,215,128,0.08)" : "rgba(255,255,255,0.03)",
+            }}
+          >
+            <span className="text-2xl">🧳</span>
+            <span className="font-semibold text-white">Traveler</span>
+            <span className="text-xs text-white/50">Discover guides & book tours</span>
+            {form.role === "traveler" && (
+              <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#75d780] text-xs font-bold text-black">✓</span>
+            )}
+          </button>
+
+          <button
+            type="button"
+            id="role-guide"
+            onClick={() => handleChange("role", "guide")}
+            className="relative flex flex-col items-center gap-2 rounded-xl border-2 p-4 text-center transition-all duration-200"
+            style={{
+              borderColor: form.role === "guide" ? "#75d780" : "rgba(255,255,255,0.1)",
+              background: form.role === "guide" ? "rgba(117,215,128,0.08)" : "rgba(255,255,255,0.03)",
+            }}
+          >
+            <span className="text-2xl">🗺️</span>
+            <span className="font-semibold text-white">Guide</span>
+            <span className="text-xs text-white/50">Offer tours & earn income</span>
+            {form.role === "guide" && (
+              <span className="absolute right-2 top-2 flex h-5 w-5 items-center justify-center rounded-full bg-[#75d780] text-xs font-bold text-black">✓</span>
+            )}
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <input
             className="input-field"
             value={form.name}
@@ -99,29 +150,45 @@ const RegisterPage = () => {
               {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
             </button>
           </div>
-          <select
-            className="input-field"
-            value={form.role}
-            onChange={(event) => handleChange("role", event.target.value)}
-          >
-            <option value="traveler">Traveler</option>
-            <option value="guide">Guide</option>
-          </select>
           <button
             type="submit"
             disabled={loading}
             className="btn-primary w-full disabled:opacity-60"
           >
-            {loading ? "Creating account..." : "Register with email"}
+            {loading
+              ? "Creating account..."
+              : `Register as ${form.role === "guide" ? "Guide" : "Traveler"} with email`}
           </button>
         </form>
 
         {googleEnabled ? (
-          <div className="mt-6 flex justify-center">
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={() => toast.error("Google sign-up failed.")}
-            />
+          <div className="mt-6 space-y-4">
+            <div className="my-6 flex items-center gap-4">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-xs font-semibold uppercase tracking-wider text-white/40">
+                or continue with
+              </span>
+              <div className="h-px flex-1 bg-white/10" />
+            </div>
+            <div className="flex w-full justify-center overflow-hidden">
+              <div className="flex w-full max-w-[400px] justify-center transition-transform hover:scale-[1.01]">
+                <GoogleLogin
+                  onSuccess={handleGoogleSuccess}
+                  onError={() => toast.error("Google sign-up failed.")}
+                  theme="filled_black"
+                  shape="rectangular"
+                  size="large"
+                  text="signup_with"
+                  width={btnWidth}
+                />
+              </div>
+            </div>
+            <p className="text-center text-xs text-white/40">
+              Will register you as a{" "}
+              <span className="font-semibold text-[#75d780]">
+                {form.role === "guide" ? "Guide" : "Traveler"}
+              </span>
+            </p>
           </div>
         ) : (
           <p className="mt-6 text-center text-sm text-white/50">

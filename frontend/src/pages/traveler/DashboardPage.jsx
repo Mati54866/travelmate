@@ -368,11 +368,9 @@ const DashboardPage = () => {
               </p>
             </div>
             <p className="mt-3 text-sm leading-6 text-white/55">
-              Our support team is available to assist with any booking queries or changes.
+              Our support team is available to assist with any booking queries
+              or changes.
             </p>
-            <button className="btn-primary mt-4 inline-flex text-xs">
-              Contact Support
-            </button>
           </div>
         </aside>
 
@@ -470,7 +468,8 @@ const DashboardPage = () => {
                   </p>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-white/55">
-                  Our support team is available to assist with any booking queries or changes.
+                  Our support team is available to assist with any booking
+                  queries or changes.
                 </p>
               </div>
             </aside>
@@ -762,7 +761,7 @@ const DashboardPage = () => {
                 >
                   <div className="flex items-center justify-between">
                     <h3 className="text-sm font-semibold text-white">
-                       Saved Tours
+                      Saved Tours
                     </h3>
                     <span className="text-xs text-[#75d780]">
                       Your wishlist
